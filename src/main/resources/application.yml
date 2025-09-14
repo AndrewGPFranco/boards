@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: board
+
+  jpa:
+    hibernate:
+      ddl-auto: update
