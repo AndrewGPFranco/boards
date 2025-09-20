@@ -56,8 +56,19 @@ public class User {
 
     public User(String nome, String nomeCompleto, String email, String senha,
                 String numeroTelefone, LocalDate dataNascimento, String username) {
-        UtilsValidation.validaEmail(email);
-        UtilsValidation.validaIdadeUsuario(dataNascimento);
+        boolean isEmailValid = UtilsValidation.isValidEmail(email);
+        if (!isEmailValid) {
+            throw new IllegalArgumentException(
+                    """
+                                O email informado não esta no padrão necessário!
+                                Padrão correto: 'email@email.com'
+                            """
+            );
+        }
+
+        boolean isAgeValid = UtilsValidation.isValidAge(dataNascimento);
+        if (!isAgeValid)
+            throw new IllegalArgumentException("Para utilizar o sistema é necessário ter ao menos 10 anos de idade!");
 
         this.nome = nome;
         this.nomeCompleto = nomeCompleto;

@@ -6,24 +6,19 @@ import java.util.regex.Pattern;
 
 public class UtilsValidation {
 
-    private static final Pattern pattern = Pattern.compile("\\b[A-Z0-9._%-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}\\b");
+    private static final Pattern patternEmail = Pattern
+            .compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 
-    public static void validaEmail(String email) {
-        Matcher matcher = pattern.matcher(email);
-
-        if (!matcher.find()) throw new IllegalArgumentException("""
-                    O email informado não esta no padrão necessário!
-                    Padrão correto: 'email@email.com'
-                """);
+    public static boolean isValidEmail(String email) {
+        Matcher matcher = patternEmail.matcher(email);
+        return matcher.find();
     }
 
     /**
      * Caso o usuário tenha 10 anos ou mais, sera possível o cadastro.
      */
-    public static void validaIdadeUsuario(LocalDate dataNascimento) {
+    public static boolean isValidAge(LocalDate dataNascimento) {
         LocalDate hoje = LocalDate.now().minusYears(10);
-
-        if (!dataNascimento.isBefore(hoje))
-            throw new IllegalArgumentException("Para utilizar o sistema é necessário ter ao menos 10 anos de idade!");
+        return dataNascimento.isBefore(hoje);
     }
 }
