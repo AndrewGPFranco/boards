@@ -1,5 +1,6 @@
 package com.agpfdev.board.models;
 
+import com.agpfdev.board.utils.UtilsValidation;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -55,7 +56,8 @@ public class User {
 
     public User(String nome, String nomeCompleto, String email, String senha,
                 String numeroTelefone, LocalDate dataNascimento, String username) {
-        validaIdadeUsuario(dataNascimento);
+        UtilsValidation.validaEmail(email);
+        UtilsValidation.validaIdadeUsuario(dataNascimento);
 
         this.nome = nome;
         this.nomeCompleto = nomeCompleto;
@@ -66,13 +68,5 @@ public class User {
         this.dataNascimento = dataNascimento;
     }
 
-    /**
-     * Caso o usuário tenha 10 anos ou mais, sera possível o cadastro.
-     */
-    private void validaIdadeUsuario(LocalDate dataNascimento) {
-        LocalDate hoje = LocalDate.now().minusYears(10);
 
-        if (!dataNascimento.isBefore(hoje))
-            throw new IllegalArgumentException("Para utilizar o sistema é necessário ter ao menos 10 anos de idade!");
-    }
 }

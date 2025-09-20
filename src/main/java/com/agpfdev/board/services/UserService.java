@@ -18,10 +18,12 @@ public class UserService {
     public void registrarUsuario(UserRegisterDTO dto) {
         try {
             userRepository.save(userMapper.dtoParaEntidade(dto));
+        } catch (IllegalArgumentException ia) {
+            log.error(ia.getMessage());
+            throw new RuntimeException(ia.getMessage());
         } catch (Exception e) {
             log.error(e.getMessage());
             throw new RuntimeException("Ocorreu um erro ao realizar o cadastro!");
         }
     }
-
 }
