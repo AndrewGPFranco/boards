@@ -17,13 +17,17 @@ public class UserController {
 
     private final UserService userService;
 
+    @GetMapping("/")
+    public String index() {
+        return "users/system/index";
+    }
+
     @GetMapping("/registrar-usuario")
     public String mostrarFormulario(Model model) {
         model.addAttribute("usuario", new UserRegisterDTO("", "", "", "",
                 "", "", null));
-        return "users/form-registro";
+        return "users/form-register";
     }
-
 
     @PostMapping("/registrar-usuario")
     public String salvarUsuario(@Valid @ModelAttribute("usuario") UserRegisterDTO usuario,
@@ -34,7 +38,7 @@ public class UserController {
         userService.registrarUsuario(usuario);
 
         model.addAttribute("mensagem", "Usuário registrado com sucesso!");
-        return "users/usuario-sucesso";
+        return "users/success-user";
     }
 
 }
