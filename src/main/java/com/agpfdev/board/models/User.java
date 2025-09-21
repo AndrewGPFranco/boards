@@ -26,6 +26,7 @@ public class User {
     private UUID id;
 
     @Column(name = "nome")
+    @Length(max = 30, min = 3)
     private String nome;
 
     @Column(name = "nome_completo")
@@ -34,6 +35,7 @@ public class User {
     @Column(name = "email", unique = true)
     private String email;
 
+    @Length(max = 20, min = 3)
     @Column(name = "username", unique = true)
     private String username;
 
