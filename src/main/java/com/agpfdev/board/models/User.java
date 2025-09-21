@@ -11,6 +11,7 @@ import org.hibernate.validator.constraints.Length;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Data
 @Entity
@@ -20,9 +21,9 @@ import java.time.LocalDate;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", updatable = false, nullable = false)
-    private Long id;
+    private UUID id;
 
     @Column(name = "nome")
     private String nome;

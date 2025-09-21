@@ -4,41 +4,25 @@ import com.agpfdev.board.dtos.user.UserRegisterDTO;
 import com.agpfdev.board.services.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/")
-    public String index() {
-        return "users/system/index";
-    }
-
-    @GetMapping("/registrar-usuario")
-    public String mostrarFormulario(Model model) {
-        model.addAttribute("usuario", new UserRegisterDTO("", "", "", "",
-                "", "", null));
-        return "users/form-register";
-    }
-
     @PostMapping("/registrar-usuario")
-    public String salvarUsuario(@Valid @ModelAttribute("usuario") UserRegisterDTO usuario,
-                                BindingResult result,
-                                Model model) {
-        if (result.hasErrors()) return "usuario-form";
-
-        userService.registrarUsuario(usuario);
-
-        model.addAttribute("mensagem", "Usuário registrado com sucesso!");
-        return "users/success-user";
+    public ResponseEntity<String> salvarUsuario(@Valid @RequestBody UserRegisterDTO usuario) {
+        try {
+            userService.registrarUsuario(usuario);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Usuário registrado com sucesso!");
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError()
+                    .body("Ocorreu um erro ao registrar-se, confira os dados e tente novamente!");
+        }
     }
 
 }
