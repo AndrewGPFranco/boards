@@ -14,12 +14,12 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping("/registrar-usuario")
-    public ResponseEntity<String> salvarUsuario(@Valid @RequestBody UserRegisterDTO usuario) {
+    @PostMapping("/open/v1/auth/registrar-usuario")
+    ResponseEntity<String> salvarUsuario(@Valid @RequestBody UserRegisterDTO usuario) {
         try {
             userService.registrarUsuario(usuario);
             return ResponseEntity.status(HttpStatus.CREATED).body("Usuário registrado com sucesso!");
-        } catch (Exception e) {
+        } catch (Exception _) {
             return ResponseEntity.internalServerError()
                     .body("Ocorreu um erro ao registrar-se, confira os dados e tente novamente!");
         }
