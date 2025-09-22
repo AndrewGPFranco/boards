@@ -7,7 +7,7 @@ create table users (
     senha varchar not null,
     numero_telefone varchar(11) unique,
     data_nascimento date not null,
-    created_at timestamp not null now(),
-    updated_at timestamp not null now(),
+    created_at timestamp not null default now(),
+    updated_at timestamp not null default now(),
     constraint pk_users primary key (id)
 );
