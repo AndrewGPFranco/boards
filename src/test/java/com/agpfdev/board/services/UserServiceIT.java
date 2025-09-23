@@ -40,17 +40,17 @@ class UserServiceIT extends BoardApplicationTests {
         UserRegisterDTO dtoUsernameRepetido = getUserRegisterDTO("email2@gmail.com", "andrewgo",
                 "11972938321", this.dataNascimentoPadrao);
         RuntimeException runtimeException = Assertions.assertThrows(RuntimeException.class, () -> userService.registrarUsuario(dtoUsernameRepetido));
-        Assertions.assertEquals("O username informado já esta em uso!", runtimeException.getMessage());
+        Assertions.assertEquals("O username informado já está em uso!", runtimeException.getMessage());
 
         UserRegisterDTO dtoEmailRepetido = getUserRegisterDTO("email@gmail.com", "andrew",
                 "11972938339", this.dataNascimentoPadrao);
         RuntimeException runtimeException2 = Assertions.assertThrows(RuntimeException.class, () -> userService.registrarUsuario(dtoEmailRepetido));
-        Assertions.assertEquals("O email informado já esta em uso!", runtimeException2.getMessage());
+        Assertions.assertEquals("O email informado já está em uso!", runtimeException2.getMessage());
 
         UserRegisterDTO dtoNumeroTelefoneRepetido = getUserRegisterDTO("email1@gmail.com", "andrew",
                 "11972938465", this.dataNascimentoPadrao);
         RuntimeException runtimeException3 = Assertions.assertThrows(RuntimeException.class, () -> userService.registrarUsuario(dtoNumeroTelefoneRepetido));
-        Assertions.assertEquals("O número de telefone informado já esta em uso!", runtimeException3.getMessage());
+        Assertions.assertEquals("O número de telefone informado já está em uso!", runtimeException3.getMessage());
 
         UserRegisterDTO dtoEmailFormatoIncorreto = getUserRegisterDTO("email1gmail.com", "andrew",
                 "11972938465", this.dataNascimentoPadrao);

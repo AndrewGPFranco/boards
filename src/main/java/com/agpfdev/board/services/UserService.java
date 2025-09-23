@@ -27,10 +27,14 @@ public class UserService {
     public void registrarUsuario(UserRegisterDTO dto) {
         try {
             userRepository.save(userMapper.dtoParaEntidade(dto));
-        } catch (IllegalArgumentException | DataIntegrityViolationException ex) {
+        } catch (DataIntegrityViolationException ex) {
             log.error(ex.getMessage());
             String mensagemErro = recuperaCampoJaUtilizado(ex.getMessage());
-            throw new RuntimeException(mensagemErro);
+            throw new DataIntegrityViolationException(mensagemErro);
+        } catch (IllegalArgumentException iae) {
+            log.error(iae.getMessage());
+            String mensagemErro = recuperaCampoJaUtilizado(iae.getMessage());
+            throw new IllegalArgumentException(mensagemErro);
         } catch (Exception e) {
             log.error(e.getMessage());
             throw new RuntimeException("Ocorreu um erro ao realizar o cadastro!");
