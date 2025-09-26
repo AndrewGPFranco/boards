@@ -6,6 +6,8 @@ import java.util.regex.Pattern;
 
 public class UtilsValidation {
 
+    private UtilsValidation() {}
+
     private static final Pattern patternEmail = Pattern
             .compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 

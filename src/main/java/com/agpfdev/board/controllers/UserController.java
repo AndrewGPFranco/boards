@@ -21,8 +21,7 @@ public class UserController {
             userService.registrarUsuario(usuario);
             return ResponseEntity.status(HttpStatus.CREATED).body("Usuário registrado com sucesso!");
         } catch (IllegalArgumentException | DataIntegrityViolationException ex) {
-            return ResponseEntity.badRequest()
-                    .body(ex.getMessage());
+            return ResponseEntity.badRequest().body(ex.getMessage());
         } catch (Exception _) {
             return ResponseEntity.internalServerError()
                     .body("Ocorreu um erro ao registrar-se, confira os dados e tente novamente!");

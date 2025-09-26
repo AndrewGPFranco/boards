@@ -8,7 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
-import java.util.Map;
+import java.util.function.Consumer;
 
 @Slf4j
 @Service
@@ -18,45 +18,32 @@ public class UserService {
     private final UserMapper userMapper;
     private final UserRepository userRepository;
 
-    private static final Map<String, String> CAMPOS_MENSAGEM = Map.of(
-            "users_email_key", "O email informado já está em uso!",
-            "users_username_key", "O username informado já está em uso!",
-            "users_numero_telefone_key", "O número de telefone informado já está em uso!"
-    );
-
     public void registrarUsuario(UserRegisterDTO dto) {
         try {
+            validaInput(dto);
             userRepository.save(userMapper.dtoParaEntidade(dto));
-        } catch (DataIntegrityViolationException ex) {
+        } catch (DataIntegrityViolationException | IllegalArgumentException ex) {
             log.error(ex.getMessage());
-            String mensagemErro = recuperaCampoJaUtilizado(ex.getMessage());
-            throw new DataIntegrityViolationException(mensagemErro);
-        } catch (IllegalArgumentException iae) {
-            log.error(iae.getMessage());
-            String mensagemErro = recuperaCampoJaUtilizado(iae.getMessage());
-            throw new IllegalArgumentException(mensagemErro);
+            throw new DataIntegrityViolationException(ex.getMessage());
         } catch (Exception e) {
             log.error(e.getMessage());
             throw new RuntimeException("Ocorreu um erro ao realizar o cadastro!");
         }
     }
 
-    /**
-     * Responsável por verificar qual o campo que já foi utilizado, passando uma resposta certeira ao usuário
-     *
-     * @return mensagem formatada informando o campo que já foi utilizado!
-     */
-    protected String recuperaCampoJaUtilizado(String mensagemException) {
-        log.error(mensagemException);
+    private final Consumer<String> throwError = campo -> {
+        throw new IllegalArgumentException(campo);
+    };
 
-        for (Map.Entry<String, String> entry : CAMPOS_MENSAGEM.entrySet()) {
-            if (mensagemException.contains(entry.getKey()))
-                return entry.getValue();
-        }
+    private void validaInput(UserRegisterDTO dto) {
+        userRepository.findByEmail(dto.email()).ifPresent(_ ->
+                throwError.accept(String.format("O email %s já esta em uso", dto.email())));
 
-        if (mensagemException.contains("Padrão correto:") || mensagemException.contains("10 anos de idade"))
-            return mensagemException;
+        userRepository.findByUsername(dto.username()).ifPresent(_ ->
+                throwError.accept(String.format("O username %s já esta em uso!", dto.username())));
 
-        return "Ocorreu um erro ao registrar o usuário, verifique os dados e tente novamente!";
+        userRepository.findByNumeroTelefone(dto.numeroTelefone()).ifPresent(_ ->
+                throwError.accept(String.format("O número de telefone %s já esta em uso!", dto.numeroTelefone())));
     }
+
 }

@@ -57,6 +57,8 @@ public class User {
     @Column(name = "updated_at")
     private Instant updatedAt;
 
+    public User() {}
+
     public User(String nome, String nomeCompleto, String email, String senha,
                 String numeroTelefone, LocalDate dataNascimento, String username) {
         boolean isEmailValid = UtilsValidation.isValidEmail(email);
