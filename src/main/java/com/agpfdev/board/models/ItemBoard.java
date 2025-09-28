@@ -1,7 +1,9 @@
 package com.agpfdev.board.models;
 
+import com.agpfdev.board.enums.CategoryType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,7 +13,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.validator.constraints.Length;
 
 import java.time.Instant;
-import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -19,37 +20,30 @@ import java.util.UUID;
 @Builder
 @ToString
 @AllArgsConstructor
-@Table(name = "boards")
-public class Board {
+@Table(name = "itens_board")
+public class ItemBoard {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     @NotBlank
-    @Column(name = "titulo")
     @Length(min = 3, max = 25)
+    @Column(name = "titulo")
     private String titulo;
 
-    @NotBlank
+    @Length(min = 1, max = 5000)
     @Column(name = "descricao")
     private String descricao;
 
-    @OneToOne(
-            mappedBy = "board",
-            cascade = CascadeType.ALL,
-            optional = false,
-            fetch = FetchType.LAZY
-    )
-    private User user;
+    @NotNull
+    @Column(name = "categoria")
+    @Enumerated(EnumType.STRING)
+    private CategoryType categoria;
 
-    @OneToMany(
-            mappedBy = "board",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true,
-            fetch = FetchType.LAZY
-    )
-    private List<ItemBoard> itensBoards;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "board_id", nullable = false)
+    private Board board;
 
     @CreationTimestamp
     @Column(name = "created_at")
@@ -58,5 +52,8 @@ public class Board {
     @UpdateTimestamp
     @Column(name = "updated_at")
     private Instant updatedAt;
+
+    @Column(name = "finalized_at")
+    private Instant finalizedAt;
 
 }
