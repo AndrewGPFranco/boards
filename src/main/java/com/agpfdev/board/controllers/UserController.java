@@ -27,7 +27,7 @@ public class UserController {
     private final AuthenticationManager authManager;
 
     @PostMapping("/open/v1/auth/login")
-    ResponseEntity<ResponseAPI> login(@RequestBody LoginRequestDTO dto) {
+    ResponseEntity<ResponseAPI> login(@RequestBody @Valid LoginRequestDTO dto) {
         try {
             UsernamePasswordAuthenticationToken usernamePassword = new UsernamePasswordAuthenticationToken(dto.email(),
                     dto.password());

@@ -4,13 +4,14 @@ import com.agpfdev.board.dtos.AbstractMapper;
 import com.agpfdev.board.dtos.itensBoard.InputItemBoardDTO;
 import com.agpfdev.board.dtos.itensBoard.OutputItemBoardDTO;
 import com.agpfdev.board.models.ItemBoard;
+import com.agpfdev.board.models.User;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ItemBoardMapper extends AbstractMapper<ItemBoard, InputItemBoardDTO, OutputItemBoardDTO> {
 
     @Override
-    public ItemBoard dtoParaEntidade(InputItemBoardDTO dto) {
+    public ItemBoard dtoParaEntidade(InputItemBoardDTO dto, User user) {
         return null;
     }
 

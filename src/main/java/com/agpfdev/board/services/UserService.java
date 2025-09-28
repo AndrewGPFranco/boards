@@ -21,7 +21,7 @@ public class UserService {
     public void registrarUsuario(UserRegisterDTO dto) {
         try {
             validaInput(dto);
-            userRepository.save(mapperFacade.getUserMapper().dtoParaEntidade(dto));
+            userRepository.save(mapperFacade.getUserMapper().dtoParaEntidade(dto, null));
         } catch (DataIntegrityViolationException | IllegalArgumentException ex) {
             log.error(ex.getMessage());
             throw new DataIntegrityViolationException(ex.getMessage());

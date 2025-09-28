@@ -5,6 +5,7 @@ import com.agpfdev.board.dtos.board.InputBoardDTO;
 import com.agpfdev.board.dtos.board.OutputBoardDTO;
 import com.agpfdev.board.mappers.itensBoard.ItemBoardMapper;
 import com.agpfdev.board.models.Board;
+import com.agpfdev.board.models.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -19,11 +20,11 @@ public class BoardMapper extends AbstractMapper<Board, InputBoardDTO, OutputBoar
     private final ItemBoardMapper itemBoardMapper;
 
     @Override
-    public Board dtoParaEntidade(InputBoardDTO dto) {
+    public Board dtoParaEntidade(InputBoardDTO dto, User user) {
         return Board.builder()
-                .titulo(dto.getTitulo())
-                .descricao(dto.getDescricao())
-                .user(dto.getUser())
+                .titulo(dto.titulo())
+                .descricao(dto.descricao())
+                .user(user)
                 .itensBoard(new ArrayList<>())
                 .build();
     }
