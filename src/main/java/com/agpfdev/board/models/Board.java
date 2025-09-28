@@ -49,7 +49,7 @@ public class Board {
             orphanRemoval = true,
             fetch = FetchType.LAZY
     )
-    private List<ItemBoard> itensBoards;
+    private List<ItemBoard> itensBoard;
 
     @CreationTimestamp
     @Column(name = "created_at")

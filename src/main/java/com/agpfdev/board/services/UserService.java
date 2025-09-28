@@ -1,7 +1,7 @@
 package com.agpfdev.board.services;
 
 import com.agpfdev.board.dtos.user.UserRegisterDTO;
-import com.agpfdev.board.mappers.user.UserMapper;
+import com.agpfdev.board.facades.MapperFacade;
 import com.agpfdev.board.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,13 +15,13 @@ import java.util.function.Consumer;
 @RequiredArgsConstructor
 public class UserService {
 
-    private final UserMapper userMapper;
+    private final MapperFacade mapperFacade;
     private final UserRepository userRepository;
 
     public void registrarUsuario(UserRegisterDTO dto) {
         try {
             validaInput(dto);
-            userRepository.save(userMapper.dtoParaEntidade(dto));
+            userRepository.save(mapperFacade.getUserMapper().dtoParaEntidade(dto));
         } catch (DataIntegrityViolationException | IllegalArgumentException ex) {
             log.error(ex.getMessage());
             throw new DataIntegrityViolationException(ex.getMessage());
