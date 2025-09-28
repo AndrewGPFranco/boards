@@ -4,6 +4,7 @@ import com.agpfdev.board.utils.UtilsValidation;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -17,6 +18,7 @@ import java.util.UUID;
 @Entity
 @ToString
 @EqualsAndHashCode
+@NoArgsConstructor
 @Table(name = "users")
 public class User {
 
@@ -57,7 +59,13 @@ public class User {
     @Column(name = "updated_at")
     private Instant updatedAt;
 
-    public User() {}
+    @OneToOne(
+            cascade = CascadeType.ALL,
+            optional = false,
+            fetch = FetchType.LAZY
+    )
+    @JoinColumn(name = "board_id")
+    private Board board;
 
     public User(String nome, String nomeCompleto, String email, String senha,
                 String numeroTelefone, LocalDate dataNascimento, String username) {
