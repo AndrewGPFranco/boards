@@ -17,9 +17,9 @@ import java.util.UUID;
 @Data
 @Entity
 @Builder
-@ToString
 @AllArgsConstructor
 @Table(name = "boards")
+@ToString(exclude = "user")
 public class Board {
 
     @Id

@@ -9,18 +9,22 @@ import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 @Data
 @Entity
-@ToString
-@EqualsAndHashCode
 @NoArgsConstructor
 @Table(name = "users")
-public class User {
+@ToString(exclude = "board")
+@EqualsAndHashCode(exclude = {"board"})
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -61,7 +65,6 @@ public class User {
 
     @OneToOne(
             cascade = CascadeType.ALL,
-            optional = false,
             fetch = FetchType.LAZY
     )
     @JoinColumn(name = "board_id")
@@ -93,4 +96,13 @@ public class User {
     }
 
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of();
+    }
+
+    @Override
+    public String getPassword() {
+        return getSenha();
+    }
 }
