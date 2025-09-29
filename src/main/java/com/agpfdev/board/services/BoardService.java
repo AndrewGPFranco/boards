@@ -1,6 +1,7 @@
 package com.agpfdev.board.services;
 
 import com.agpfdev.board.dtos.board.InputBoardDTO;
+import com.agpfdev.board.dtos.board.OutputBoardDTO;
 import com.agpfdev.board.facades.MapperFacade;
 import com.agpfdev.board.models.Board;
 import com.agpfdev.board.models.User;
@@ -34,4 +35,8 @@ public class BoardService {
         }
     }
 
+    public OutputBoardDTO getBoardByUser(User user) {
+        Board board = user.getBoard();
+        return mapperFacade.getBoardMapper().entidadeParaDTO(board);
+    }
 }

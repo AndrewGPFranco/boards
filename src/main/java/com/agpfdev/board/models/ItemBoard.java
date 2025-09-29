@@ -4,21 +4,19 @@ import com.agpfdev.board.enums.CategoryType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.validator.constraints.Length;
 
 import java.time.Instant;
+import java.util.Objects;
 import java.util.UUID;
 
 @Data
 @Entity
 @Builder
-@ToString
+@NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "itens_board")
 public class ItemBoard {
@@ -55,5 +53,31 @@ public class ItemBoard {
 
     @Column(name = "finalized_at")
     private Instant finalizedAt;
+
+    @Override
+    public String toString() {
+        return "ItemBoard{" +
+                "id=" + id +
+                ", titulo='" + titulo + '\'' +
+                ", descricao='" + descricao + '\'' +
+                ", categoria=" + categoria +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", finalizedAt=" + finalizedAt +
+                ", board=" + board +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        ItemBoard itemBoard = (ItemBoard) o;
+        return Objects.equals(id, itemBoard.id) && Objects.equals(titulo, itemBoard.titulo) && Objects.equals(descricao, itemBoard.descricao) && categoria == itemBoard.categoria && Objects.equals(board, itemBoard.board) && Objects.equals(createdAt, itemBoard.createdAt) && Objects.equals(updatedAt, itemBoard.updatedAt) && Objects.equals(finalizedAt, itemBoard.finalizedAt);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, titulo, descricao, categoria, board, createdAt, updatedAt, finalizedAt);
+    }
 
 }

@@ -6,13 +6,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.validator.constraints.Length;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Data
@@ -21,7 +21,6 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "boards")
-@ToString(exclude = "user")
 public class Board {
 
     @Id
@@ -49,7 +48,7 @@ public class Board {
             mappedBy = "board",
             cascade = CascadeType.ALL,
             orphanRemoval = true,
-            fetch = FetchType.LAZY
+            fetch = FetchType.EAGER
     )
     private List<ItemBoard> itensBoard;
 
@@ -61,4 +60,28 @@ public class Board {
     @Column(name = "updated_at")
     private Instant updatedAt;
 
+    @Override
+    public String toString() {
+        return "Board{" +
+                "id=" + id +
+                ", titulo='" + titulo + '\'' +
+                ", descricao='" + descricao + '\'' +
+                ", user=" + user +
+                ", itensBoard=" + itensBoard +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Board board = (Board) o;
+        return Objects.equals(id, board.id) && Objects.equals(titulo, board.titulo) && Objects.equals(descricao, board.descricao) && Objects.equals(user, board.user) && Objects.equals(itensBoard, board.itensBoard) && Objects.equals(createdAt, board.createdAt) && Objects.equals(updatedAt, board.updatedAt);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, titulo, descricao, user, itensBoard, createdAt, updatedAt);
+    }
 }

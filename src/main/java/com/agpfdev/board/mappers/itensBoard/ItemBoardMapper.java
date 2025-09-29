@@ -7,6 +7,10 @@ import com.agpfdev.board.models.ItemBoard;
 import com.agpfdev.board.models.User;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+
 @Component
 public class ItemBoardMapper extends AbstractMapper<ItemBoard, InputItemBoardDTO, OutputItemBoardDTO> {
 
@@ -23,7 +27,17 @@ public class ItemBoardMapper extends AbstractMapper<ItemBoard, InputItemBoardDTO
 
     @Override
     public OutputItemBoardDTO entidadeParaDTO(ItemBoard itemBoard) {
-        return new OutputItemBoardDTO();
+        return new OutputItemBoardDTO(itemBoard.getId(), itemBoard.getTitulo(), itemBoard.getDescricao(),
+                itemBoard.getCategoria(), getLocalDateFromInstantNullCheck(itemBoard.getCreatedAt()),
+                getLocalDateFromInstantNullCheck(itemBoard.getUpdatedAt()),
+                getLocalDateFromInstantNullCheck(itemBoard.getFinalizedAt()));
+    }
+
+    private LocalDate getLocalDateFromInstantNullCheck(Instant instant) {
+        if (instant == null) return null;
+
+        final String zoneId = "America/Sao_Paulo";
+        return LocalDate.ofInstant(instant, ZoneId.of(zoneId));
     }
 
 }

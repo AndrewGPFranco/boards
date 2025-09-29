@@ -3,9 +3,7 @@ package com.agpfdev.board.models;
 import com.agpfdev.board.utils.UtilsValidation;
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.validator.constraints.Length;
@@ -16,14 +14,13 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Data
 @Entity
 @NoArgsConstructor
 @Table(name = "users")
-@ToString(exclude = "board")
-@EqualsAndHashCode(exclude = {"board"})
 public class User implements UserDetails {
 
     @Id
@@ -65,7 +62,7 @@ public class User implements UserDetails {
 
     @OneToOne(
             cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY
+            fetch = FetchType.EAGER
     )
     @JoinColumn(name = "board_id")
     private Board board;
@@ -105,4 +102,34 @@ public class User implements UserDetails {
     public String getPassword() {
         return getSenha();
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", nomeCompleto='" + nomeCompleto + '\'' +
+                ", email='" + email + '\'' +
+                ", username='" + username + '\'' +
+                ", senha='" + senha + '\'' +
+                ", numeroTelefone='" + numeroTelefone + '\'' +
+                ", dataNascimento=" + dataNascimento +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", board=" + board +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(id, user.id) && Objects.equals(nome, user.nome) && Objects.equals(nomeCompleto, user.nomeCompleto) && Objects.equals(email, user.email) && Objects.equals(username, user.username) && Objects.equals(senha, user.senha) && Objects.equals(numeroTelefone, user.numeroTelefone) && Objects.equals(dataNascimento, user.dataNascimento) && Objects.equals(createdAt, user.createdAt) && Objects.equals(updatedAt, user.updatedAt) && Objects.equals(board, user.board);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, nome, nomeCompleto, email, username, senha, numeroTelefone, dataNascimento, createdAt, updatedAt, board);
+    }
+
 }
