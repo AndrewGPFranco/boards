@@ -12,12 +12,18 @@ public class ItemBoardMapper extends AbstractMapper<ItemBoard, InputItemBoardDTO
 
     @Override
     public ItemBoard dtoParaEntidade(InputItemBoardDTO dto, User user) {
-        return null;
+        return ItemBoard.builder()
+                .titulo(dto.getTitulo())
+                .descricao(dto.getDescricao())
+                .categoria(dto.getCategoryType())
+                .board(dto.getBoard())
+                .finalizedAt(null)
+                .build();
     }
 
     @Override
     public OutputItemBoardDTO entidadeParaDTO(ItemBoard itemBoard) {
-        return null;
+        return new OutputItemBoardDTO();
     }
 
 }
