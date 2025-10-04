@@ -10,10 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -47,6 +44,15 @@ public class BoardController {
     @GetMapping("/api/v1/board/categorias")
     ResponseEntity<List<String>> getCategorias() {
         return ResponseEntity.ok().body(Arrays.stream(CategoryType.values()).map(Enum::name).toList());
+    }
+
+    @DeleteMapping("/api/v1/board/delete")
+    ResponseEntity<?> deleteBoard(@RequestParam String id, @AuthenticationPrincipal User user) {
+        try {
+            return ResponseEntity.ok().body(boardService.deleteBoard(id, user));
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body(e.getMessage());
+        }
     }
 
 }

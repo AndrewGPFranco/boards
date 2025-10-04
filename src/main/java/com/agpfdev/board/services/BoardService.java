@@ -7,12 +7,14 @@ import com.agpfdev.board.models.Board;
 import com.agpfdev.board.models.User;
 import com.agpfdev.board.repositories.BoardRepository;
 import com.agpfdev.board.repositories.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -44,4 +46,21 @@ public class BoardService {
         List<Board> boards = user.getBoards();
         return boards.stream().map(board -> mapperFacade.getBoardMapper().entidadeParaDTO(board)).toList();
     }
+
+    @Transactional
+    public String deleteBoard(String idBoard, User user) {
+        UUID uuid = UUID.fromString(idBoard);
+
+        Board boardToRemove = user.getBoards().stream()
+                .filter(b -> b.getId().equals(uuid))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Board não encontrada"));
+
+        user.getBoards().remove(boardToRemove);
+        userRepository.save(user);
+
+        return "Board apagada com sucesso!";
+    }
+
+
 }
