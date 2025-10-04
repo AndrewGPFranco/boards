@@ -61,7 +61,7 @@ public class User implements UserDetails {
             mappedBy = "user",
             cascade = CascadeType.ALL,
             orphanRemoval = true,
-            fetch = FetchType.LAZY
+            fetch = FetchType.EAGER
     )
     private List<Board> boards = new ArrayList<>();
 

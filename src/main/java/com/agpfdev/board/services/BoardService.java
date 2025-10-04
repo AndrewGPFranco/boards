@@ -11,6 +11,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -27,7 +30,9 @@ public class BoardService {
 
             Board board = mapperFacade.getBoardMapper().dtoParaEntidade(inputBoardDTO, managedUser);
 
-            managedUser.setBoard(board);
+            if (managedUser.getBoards() == null) managedUser.setBoards(new ArrayList<>());
+
+            managedUser.getBoards().add(board);
             boardRepository.save(board);
         } catch (Exception ex) {
             log.error(ex.getMessage());
@@ -35,8 +40,8 @@ public class BoardService {
         }
     }
 
-    public OutputBoardDTO getBoardByUser(User user) {
-        Board board = user.getBoard();
-        return mapperFacade.getBoardMapper().entidadeParaDTO(board);
+    public List<OutputBoardDTO> getBoardsByUser(User user) {
+        List<Board> boards = user.getBoards();
+        return boards.stream().map(board -> mapperFacade.getBoardMapper().entidadeParaDTO(board)).toList();
     }
 }

@@ -39,7 +39,7 @@ public class ItemBoard {
     @Enumerated(EnumType.STRING)
     private CategoryType categoria;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "board_id", nullable = false)
     private Board board;
 

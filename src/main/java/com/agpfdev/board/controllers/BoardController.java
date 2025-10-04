@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 public class BoardController {
@@ -33,8 +35,8 @@ public class BoardController {
     @GetMapping("/api/v1/board/itens")
     ResponseEntity<Object> getBoard(@AuthenticationPrincipal User user) {
         try {
-            OutputBoardDTO output = boardService.getBoardByUser(user);
-            return ResponseEntity.ok().body(output);
+            List<OutputBoardDTO> boardsByUser = boardService.getBoardsByUser(user);
+            return ResponseEntity.ok().body(boardsByUser);
         } catch (Exception ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
