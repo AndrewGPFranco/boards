@@ -12,10 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.Instant;
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 @Data
 @Entity
@@ -60,12 +57,13 @@ public class User implements UserDetails {
     @Column(name = "updated_at")
     private Instant updatedAt;
 
-    @OneToOne(
+    @OneToMany(
+            mappedBy = "user",
             cascade = CascadeType.ALL,
-            fetch = FetchType.EAGER
+            orphanRemoval = true,
+            fetch = FetchType.LAZY
     )
-    @JoinColumn(name = "board_id")
-    private Board board;
+    private List<Board> boards = new ArrayList<>();
 
     public User(String nome, String nomeCompleto, String email, String senha,
                 String numeroTelefone, LocalDate dataNascimento, String username) {
@@ -116,7 +114,7 @@ public class User implements UserDetails {
                 ", dataNascimento=" + dataNascimento +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
-                ", board=" + board +
+                ", boards=" + boards +
                 '}';
     }
 
@@ -124,12 +122,11 @@ public class User implements UserDetails {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(nome, user.nome) && Objects.equals(nomeCompleto, user.nomeCompleto) && Objects.equals(email, user.email) && Objects.equals(username, user.username) && Objects.equals(senha, user.senha) && Objects.equals(numeroTelefone, user.numeroTelefone) && Objects.equals(dataNascimento, user.dataNascimento) && Objects.equals(createdAt, user.createdAt) && Objects.equals(updatedAt, user.updatedAt) && Objects.equals(board, user.board);
+        return Objects.equals(id, user.id) && Objects.equals(nome, user.nome) && Objects.equals(nomeCompleto, user.nomeCompleto) && Objects.equals(email, user.email) && Objects.equals(username, user.username) && Objects.equals(senha, user.senha) && Objects.equals(numeroTelefone, user.numeroTelefone) && Objects.equals(dataNascimento, user.dataNascimento) && Objects.equals(createdAt, user.createdAt) && Objects.equals(updatedAt, user.updatedAt) && Objects.equals(boards, user.boards);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, nome, nomeCompleto, email, username, senha, numeroTelefone, dataNascimento, createdAt, updatedAt, board);
+        return Objects.hash(id, nome, nomeCompleto, email, username, senha, numeroTelefone, dataNascimento, createdAt, updatedAt, boards);
     }
-
 }

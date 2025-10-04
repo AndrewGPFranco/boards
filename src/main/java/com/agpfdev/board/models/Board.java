@@ -36,12 +36,8 @@ public class Board {
     @Column(name = "descricao")
     private String descricao;
 
-    @OneToOne(
-            mappedBy = "board",
-            cascade = CascadeType.ALL,
-            optional = false,
-            fetch = FetchType.LAZY
-    )
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @OneToMany(
