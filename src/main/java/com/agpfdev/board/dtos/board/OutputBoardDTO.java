@@ -7,9 +7,11 @@ import lombok.Builder;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 @Builder
 public record OutputBoardDTO(
+        @NotNull UUID id,
         @NotBlank String titulo,
         @NotBlank String descricao,
         @NotBlank String username,

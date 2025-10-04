@@ -2,6 +2,7 @@ package com.agpfdev.board.controllers;
 
 import com.agpfdev.board.dtos.board.InputBoardDTO;
 import com.agpfdev.board.dtos.board.OutputBoardDTO;
+import com.agpfdev.board.enums.CategoryType;
 import com.agpfdev.board.models.User;
 import com.agpfdev.board.services.BoardService;
 import jakarta.validation.Valid;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -40,6 +42,11 @@ public class BoardController {
         } catch (Exception ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
+    }
+
+    @GetMapping("/api/v1/board/categorias")
+    ResponseEntity<List<String>> getCategorias() {
+        return ResponseEntity.ok().body(Arrays.stream(CategoryType.values()).map(Enum::name).toList());
     }
 
 }

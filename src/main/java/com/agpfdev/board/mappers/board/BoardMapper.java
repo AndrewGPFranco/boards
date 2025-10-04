@@ -34,6 +34,7 @@ public class BoardMapper extends AbstractMapper<Board, InputBoardDTO, OutputBoar
         final String zoneId = "America/Sao_Paulo";
 
         return OutputBoardDTO.builder()
+                .id(board.getId())
                 .titulo(board.getTitulo())
                 .descricao(board.getDescricao())
                 .username(board.getUser().getUsername())
